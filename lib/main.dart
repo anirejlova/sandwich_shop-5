@@ -247,6 +247,35 @@ class _OrderScreenState extends State<OrderScreen> {
                 ],
               ),
               const SizedBox(height: 20),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.shopping_cart, color: Colors.blue),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Cart: ${_cart.countOfItems} item${_cart.countOfItems == 1 ? '' : 's'}',
+                          style: normalText,
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '\$${_cart.totalPrice.toStringAsFixed(2)}',
+                      style: heading2,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
               StyledButton(
                 onPressed: _getAddToCartCallback(),
                 icon: Icons.add_shopping_cart,
