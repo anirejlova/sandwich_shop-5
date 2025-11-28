@@ -200,6 +200,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
               const SizedBox(height: 20),
               DropdownMenu<SandwichType>(
+                key: const Key('sandwichTypeDropdown'),
                 width: double.infinity,
                 label: const Text('Sandwich Type'),
                 textStyle: normalText,
@@ -221,6 +222,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
               const SizedBox(height: 20),
               DropdownMenu<BreadType>(
+                key: const Key('breadTypeDropdown'),
                 width: double.infinity,
                 label: const Text('Bread Type'),
                 textStyle: normalText,
@@ -292,41 +294,6 @@ class StyledButton extends StatelessWidget {
           Text(label),
         ],
       ),
-    );
-  }
-}
-
-class OrderItemDisplay extends StatelessWidget {
-  final int quantity;
-  final String itemType;
-  final BreadType breadType;
-  final String orderNote;
-
-  const OrderItemDisplay({
-    super.key,
-    required this.quantity,
-    required this.itemType,
-    required this.breadType,
-    required this.orderNote,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    String displayText =
-        '$quantity ${breadType.name} $itemType sandwich(es): ${'🥪' * quantity}';
-
-    return Column(
-      children: [
-        Text(
-          displayText,
-          style: normalText,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Note: $orderNote',
-          style: normalText,
-        ),
-      ],
     );
   }
 }
