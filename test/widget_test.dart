@@ -320,6 +320,87 @@ void main() {
 
       // Test passes if no exception is thrown
     });
+
+    testWidgets('shows confirmation message in SnackBar when item is added',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Set quantity to 2
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+
+      // Add to cart
+      await tester.tap(find.widgetWithText(StyledButton, 'Add to Cart'));
+      await tester.pump();
+
+      // Verify SnackBar appears with confirmation message
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(
+          find.text(
+              'Added 2 footlong Veggie Delight sandwich(es) on white bread to cart'),
+          findsOneWidget);
+
+      // Wait for SnackBar animation and duration
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets(
+        'shows correct confirmation message for different sandwich configurations',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Change to Chicken Teriyaki
+      await tester.tap(find.byType(DropdownMenu<SandwichType>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Chicken Teriyaki').last);
+      await tester.pumpAndSettle();
+
+      // Change to six-inch
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      // Change to wheat bread
+      await tester.tap(find.byType(DropdownMenu<BreadType>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('wheat').last);
+      await tester.pumpAndSettle();
+
+      // Set quantity to 3
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+
+      // Add to cart
+      await tester.tap(find.widgetWithText(StyledButton, 'Add to Cart'));
+      await tester.pump();
+
+      // Verify SnackBar with correct message
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(
+          find.text(
+              'Added 3 six-inch Chicken Teriyaki sandwich(es) on wheat bread to cart'),
+          findsOneWidget);
+
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('does not show SnackBar when quantity is 0',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // Set quantity to 0
+      await tester.tap(find.byIcon(Icons.remove));
+      await tester.pump();
+
+      // Try to add to cart (button should be disabled, but test the logic)
+      final addToCartButton =
+          tester.widget<StyledButton>(find.byType(StyledButton));
+      expect(addToCartButton.onPressed, isNull);
+
+      // Verify no SnackBar appears
+      expect(find.byType(SnackBar), findsNothing);
+    });
   });
 
   group('OrderScreen - Complex Scenarios', () {
